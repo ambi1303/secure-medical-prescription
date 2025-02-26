@@ -1,17 +1,36 @@
 <div class="verify-prescription-container">
   <h2>Verify Prescription</h2>
+
+  <!-- Show warning if user is not authenticated -->
+  <div *ngIf="verificationResult.includes('Authentication required')" class="error-message">
+      <p>⚠️ You need to log in to verify prescriptions.</p>
+  </div>
+
+  <!-- QR Code Scanner (Only visible if a camera is available) -->
+  <div *ngIf="hasCamera; else noCameraMessage">
+      <zxing-scanner 
+        (scanSuccess)="onCodeResult($event)"
+        [formats]="allowedFormats">
+      </zxing-scanner>
+  </div>
+
+  <!-- Message shown if no camera is detected -->
+  <ng-template #noCameraMessage>
+      <p>⚠️ No camera detected. Please enter the Prescription ID manually.</p>
+  </ng-template>
+
+  <!-- Manual Prescription ID Entry -->
   <form (ngSubmit)="verifyPrescription()"> 
-    <label for="signature">Prescription Signature:</label>
-    <input 
-      type="text" 
-      id="signature" 
-      [(ngModel)]="signature" 
-      name="signature" 
-      placeholder="Enter prescription signature" 
-      required
-      aria-label="Prescription Signature"
-    >
-    
-    <button type="submit">Verify</button>
+      <label for="prescriptionId">Prescription ID:</label>
+      <input type="text" id="prescriptionId" [(ngModel)]="prescriptionId" name="prescriptionId" required placeholder="Enter or Scan Prescription ID">
+      <button type="submit">Verify</button>
   </form>
+
+  <!-- Show verification results -->
+  <div *ngIf="verificationResult">
+      <h3>Verification Result:</h3>
+      <p [ngClass]="{ 'valid': verificationResult.includes('✅'), 'invalid': verificationResult.includes('❌') }">
+          {{ verificationResult }}
+      </p>
+  </div>
 </div>
