@@ -1,0 +1,25 @@
+<form (ngSubmit)="login()">
+  <label for="username">Username:</label>
+  <input 
+    type="text" 
+    id="username" 
+    [(ngModel)]="username" 
+    name="username" 
+    placeholder="Enter your username" 
+    required 
+    aria-label="Username"
+  />
+
+  <label for="password">Password:</label>
+  <input 
+    type="password" 
+    id="password" 
+    [(ngModel)]="password" 
+    name="password" 
+    placeholder="Enter your password" 
+    required 
+    aria-label="Password"
+  />
+
+  <button type="submit">Login</button>
+</form>

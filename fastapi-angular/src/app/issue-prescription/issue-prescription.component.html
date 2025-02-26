@@ -1,0 +1,12 @@
+<!-- issue-prescription.component.html -->
+<div class="issue-prescription-container">
+    <h2>Issue Prescription</h2>
+    <form (submit)="issuePrescription()">
+      <label for="patientName">Patient Name:</label>
+      <input type="text" id="patientName" [(ngModel)]="patientName" name="patientName" required>
+      
+      <label for="medications">Medications:</label>
+      <textarea id="medications" [(ngModel)]="medication" name="medications" required></textarea>
+      
+      <button type="submit">Issue</button>
+    </form>

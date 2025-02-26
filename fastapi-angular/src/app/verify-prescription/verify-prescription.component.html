@@ -1,0 +1,17 @@
+<div class="verify-prescription-container">
+  <h2>Verify Prescription</h2>
+  <form (ngSubmit)="verifyPrescription()"> 
+    <label for="signature">Prescription Signature:</label>
+    <input 
+      type="text" 
+      id="signature" 
+      [(ngModel)]="signature" 
+      name="signature" 
+      placeholder="Enter prescription signature" 
+      required
+      aria-label="Prescription Signature"
+    >
+    
+    <button type="submit">Verify</button>
+  </form>
+</div>
