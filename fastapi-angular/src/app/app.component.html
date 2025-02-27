@@ -1,3 +1,8 @@
+<div *ngIf="isLoggedIn">
+  <app-dashboard></app-dashboard> <!-- Dashboard only visible when logged in -->
+</div>
+
+
 <nav *ngIf="userRole">
   <a *ngIf="isDoctor()" routerLink="/issue-prescription">Issue Prescription</a>
   <a *ngIf="isPharmacist()" routerLink="/verify-prescription">Verify Prescription</a>

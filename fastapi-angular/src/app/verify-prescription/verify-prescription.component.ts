@@ -1,67 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { BarcodeFormat } from '@zxing/library';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-verify-prescription',
   standalone: true,
-  imports: [CommonModule, FormsModule, ZXingScannerModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './verify-prescription.component.html',
+  styleUrl: './verify-prescription.component.css'
 })
-export class VerifyPrescriptionComponent implements OnInit {
+export class VerifyPrescriptionComponent {
   prescriptionId: string = '';
-  verificationResult: string = '';
-  allowedFormats = [BarcodeFormat.QR_CODE];  // ✅ Ensure correct barcode format
-  hasCamera = false;  // ✅ Track camera availability
+  prescriptionDetails: any = null;
+  errorMessage: string = '';
+  isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
-  ngOnInit() {
-    if (typeof navigator !== 'undefined' && navigator.mediaDevices) {
-      navigator.mediaDevices.enumerateDevices()
-        .then((devices) => {
-          this.hasCamera = devices.some(device => device.kind === 'videoinput');  // ✅ Detect if device has a camera
-        })
-        .catch(() => {
-          this.hasCamera = false;
-        });
-    }
-  }
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
   verifyPrescription() {
-    this.prescriptionId = this.prescriptionId.trim();  // ✅ Remove extra spaces before sending
-  
-    const headers = this.authService.getHeaders();  
-  
-    this.http.get('http://localhost:8050/verify-prescription', {
-      params: { prescription_id: this.prescriptionId },  
-      headers: headers
-    }).subscribe(
-      (response: any) => {
-        this.verificationResult = response.message;
-      },
-      (error) => {
-        console.error("❌ Verification failed:", error);
-        if (error.status === 401) {
-          this.verificationResult = '❌ Authentication required. Please log in.';
-        } else if (error.status === 404) {
-          this.verificationResult = '❌ Prescription ID not found.';
-        } else {
-          this.verificationResult = '❌ An error occurred. Please try again.';
-        }
-      }
-    );
-  }
-  
+    if (!this.prescriptionId.trim()) {
+      this.errorMessage = 'Please enter a valid Prescription ID.';
+      return;
+    }
 
-  onCodeResult(event: any) {
-    console.log("🔍 QR Code Scanned:", event.text);  // ✅ Debugging log
-    this.prescriptionId = event.text;  
-    this.verifyPrescription();
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.prescriptionDetails = null;
+
+    const headers = this.authService.getHeaders();
+
+    this.http.get(`http://localhost:8050/verify-prescription?prescription_id=${this.prescriptionId}`, { headers })
+      .subscribe({
+        next: (response: any) => {
+          this.prescriptionDetails = response;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.errorMessage = 'Prescription not found or expired.';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }

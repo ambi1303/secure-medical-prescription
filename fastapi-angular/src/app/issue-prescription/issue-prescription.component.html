@@ -1,25 +1,40 @@
-<div class="issue-prescription-container">
-  <h2>Issue Prescription</h2>
+<div class="prescription-container">
+    <h2 class="title">New Prescription</h2>
   
-  <form (ngSubmit)="issuePrescription()">
-      <label for="patientName">Patient Name:</label>
-      <input type="text" id="patientName" [(ngModel)]="patientName" name="patientName" required placeholder="Enter patient name">
-
-      <label for="medication">Medication:</label>
-      <input type="text" id="medication" [(ngModel)]="medication" name="medication" required placeholder="Enter medication name">
-
-      <button type="submit">Issue Prescription</button>
-  </form>
-
-  <!-- Show Prescription ID & QR Code after issuing -->
-  <div *ngIf="prescriptionId">
-      <h3>Prescription Issued Successfully!</h3>
-      <p><strong>Prescription ID:</strong> {{ prescriptionId }}</p>
+    <!-- Form: Hidden after issuing a prescription -->
+    <form *ngIf="!prescriptionIssued" (ngSubmit)="issuePrescription()">
+        <label for="patientName">Patient</label>
+        <input type="text" id="patientName" [(ngModel)]="patientName" name="patientName" required placeholder="Patient's name">
+  
+        <label for="date">Date</label>
+        <input type="date" id="date" [(ngModel)]="prescriptionDate" name="prescriptionDate" required>
+  
+        <label for="medication">Prescription</label>
+        <textarea id="medication" [(ngModel)]="medication" name="medication" required placeholder="Medication, dosage, frequency"></textarea>
+  
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" [(ngModel)]="instructions" name="instructions" required placeholder="Instructions for the patient"></textarea>
+  
+        <label for="doctor">Signature</label>
+        <input type="text" id="doctor" [(ngModel)]="doctorName" name="doctorName" required placeholder="Doctor's name">
+  
+        <button type="submit" class="primary-btn">Issue Prescription</button>
+    </form>
+  
+    <!-- Show success message & QR Code after issuing -->
+    <div *ngIf="prescriptionIssued">
+        <h3>Prescription Issued Successfully!</h3>
+        <p><strong>Prescription ID:</strong> {{ prescriptionId }}</p>
+  
+        <div *ngIf="qrCode">
+            <h3>QR Code</h3>
+            <p>A QR code is generated for easy scanning and verification.</p>
+            <img [src]="qrCode" alt="Prescription QR Code" class="qr-image">
+            <a [href]="qrCode" download class="download-icon">⬇ Download</a>
+        </div>
+  
+        <!-- Button to generate a new prescription -->
+        <button class="secondary-btn" (click)="resetForm()">New Prescription</button>
+    </div>
   </div>
-
-  <div *ngIf="qrCode">
-      <h3>Scan this QR Code to Verify</h3>
-      <img [src]="qrCode" alt="Prescription QR Code">
-  </div>
-  <button (click)="navigate()">Verification</button>
-</div>
+  

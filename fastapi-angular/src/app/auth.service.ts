@@ -10,7 +10,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AuthService {
   private apiUrl = 'http://127.0.0.1:8050'; // ✅ FastAPI Backend URL
-  private loggedIn = new BehaviorSubject<boolean>(false); // ✅ Tracks login state
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable(); // ✅ Observable for login state
 
   constructor(
     private http: HttpClient,
@@ -19,22 +20,24 @@ export class AuthService {
   ) {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
-      this.loggedIn.next(!!token); // ✅ Set initial login state
+      this.isLoggedInSubject.next(!!token); // ✅ Set initial login state
     }
   }
-  private users: { username: string; password: string; role: string }[] = [];
-  private loggedInUser: { username: string; role: string } | null = null;
+
   /**
    * ✅ Login Method: Sends credentials, stores token, and navigates to dashboard
    */
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/token`, { username, password }).pipe(
       tap((response) => {
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('token', response.access_token); // ✅ Store Token
+        if (response && response.access_token) {
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('token', response.access_token); // ✅ Store Token
+            localStorage.setItem('userRole', response.role); // ✅ Store User Role
+          }
+          this.isLoggedInSubject.next(true); // ✅ Update login state
+          this.router.navigate(['/dashboard']); // ✅ Redirect after login
         }
-        this.loggedIn.next(true); // ✅ Update login state
-        this.router.navigate(['/issue-prescription']); // ✅ Redirect after login
       })
     );
   }
@@ -43,22 +46,15 @@ export class AuthService {
    * ✅ Register Method: Registers a new user
    */
   register(username: string, password: string, role: string): Observable<any> {
-    // Sends JSON payload to the /register endpoint
-    return this.http.post(`${this.apiUrl}/register`, {
-      username,
-      password,
-      role
-    });
+    return this.http.post(`${this.apiUrl}/register`, { username, password, role });
   }
 
   /**
    * ✅ Check if the user is logged in (Reactive)
    */
   isLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+    return this.isLoggedInSubject.asObservable();
   }
- 
-  
 
   /**
    * ✅ Logout Method: Clears token, updates state, and redirects to login
@@ -66,8 +62,9 @@ export class AuthService {
   logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token'); // ✅ Clear Token
+      localStorage.removeItem('userRole'); // ✅ Clear User Role
     }
-    this.loggedIn.next(false); // ✅ Update login state
+    this.isLoggedInSubject.next(false); // ✅ Update logout state
     this.router.navigate(['/login']); // ✅ Redirect to login page
   }
 
@@ -82,18 +79,27 @@ export class AuthService {
 
     return new HttpHeaders({
       Authorization: token ? `Bearer ${token}` : '',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
   }
 
   /**
-   * ✅ Manually update login state (if needed)
+   * ✅ Get the current user's role
    */
-  updateLoginStatus(status: boolean) {
-    this.loggedIn.next(status);
-  }
   getUserRole(): string | null {
-    return this.loggedInUser ? this.loggedInUser.role : null;
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('userRole');
+    }
+    return null;
   }
-  
+
+  /**
+   * ✅ Check if the user is authenticated
+   */
+  isAuthenticated(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      return !!localStorage.getItem('token');
+    }
+    return false;
+  }
 }

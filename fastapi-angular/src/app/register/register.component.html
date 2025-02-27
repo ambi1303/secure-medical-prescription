@@ -1,15 +1,22 @@
-<form (ngSubmit)="register()">
-  <label for="username">Username:</label>
-  <input type="text" id="username" [(ngModel)]="username" name="username" required />
+<div class="container">
+  <form class="form-box" (ngSubmit)="register()">
+    <h2>Register</h2>
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" [(ngModel)]="password" name="password" required />
+    <label for="username">Username</label>
+    <input type="text" id="username" [(ngModel)]="username" name="username" required placeholder="Enter your username">
 
-  <label for="role">Select Role:</label>
-  <select id="role" [(ngModel)]="role" name="role" required>
-    <option value="doctor">Doctor</option>
-    <option value="pharmacist">Pharmacist</option>
-  </select>
+    <label for="password">Password</label>
+    <input type="password" id="password" [(ngModel)]="password" name="password" required placeholder="Enter your password">
 
-  <button type="submit">Register</button>
-</form>
+    <label for="role">Select Role</label>
+    <select id="role" [(ngModel)]="role" name="role" required>
+      <option value="doctor">Doctor</option>
+      <option value="pharmacist">Pharmacist</option>
+      <option value="patient">Patient</option>
+    </select>
+
+    <button type="submit">Register</button>
+
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </form>
+</div>
