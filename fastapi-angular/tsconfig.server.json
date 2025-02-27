@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "outDir": "./out-tsc/app-server",
+      "types": ["node"],
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "target": "es2022",
+      "module": "commonjs"
+    },
+    "files": ["src/main.server.ts", "src/server.ts"],
+    "include": ["src/**/*.d.ts", "src/**/*.ts"]
+  }
+  

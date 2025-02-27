@@ -3,11 +3,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL
 
-engine = create_engine(DATABASE_URL,echo=True)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)  # ✅ Prevents "Idle" state issues in NeonDB
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 Base = declarative_base()
 
-# Dependency to get DB Session
+# ✅ Dependency to get DB Session
 def get_db():
     db = SessionLocal()
     try:

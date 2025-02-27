@@ -1,3 +1,10 @@
-<app-login></app-login>
-<app-issue-prescription></app-issue-prescription>
-<app-verify-prescription></app-verify-prescription>
+<nav *ngIf="userRole">
+  <a *ngIf="isDoctor()" routerLink="/issue-prescription">Issue Prescription</a>
+  <a *ngIf="isPharmacist()" routerLink="/verify-prescription">Verify Prescription</a>
+  <button (click)="logout()">Logout</button>
+</nav>
+
+<p *ngIf="!userRole">
+  Please <a routerLink="/login">log in</a> to access the system.
+</p>
+<router-outlet></router-outlet>

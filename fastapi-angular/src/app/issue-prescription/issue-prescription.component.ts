@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({ 
   selector: 'app-issue-prescription',
@@ -18,7 +20,9 @@ import { CommonModule } from '@angular/common';
     prescriptionId: string = '';
     qrCode: string = '';
   
-    constructor(private http: HttpClient, private authService: AuthService) {}
+    constructor(private http: HttpClient, private authService: AuthService,
+      private router:Router
+    ) {}
   
     issuePrescription() {
       const headers = this.authService.getHeaders();
@@ -30,4 +34,8 @@ import { CommonModule } from '@angular/common';
           this.qrCode = `data:image/png;base64,${response.qr_code}`;
         });
     }
+    navigate() {
+      this.router.navigate(['/verify-prescription']); // ✅ Fix navigation
+    }
+    
   }
