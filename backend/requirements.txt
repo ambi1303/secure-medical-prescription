@@ -12,3 +12,5 @@ python-multipart==0.0.6  # Required for form data handling
 cryptography==41.0.3  # For RSA signing & security
 qrcode==7.4.2  # QR code generation
 pillow==10.0.0  # Image processing for QR codes
+pycryptodome
+
