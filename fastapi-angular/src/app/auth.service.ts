@@ -4,12 +4,15 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://secure-medical-prescription.onrender.com/'; // ✅ FastAPI Backend URL
+  private apiUrl = `${environment.apiUrl}`;
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
   isLoggedIn$ = this.isLoggedInSubject.asObservable(); // ✅ Observable for login state
 
