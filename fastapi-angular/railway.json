@@ -6,8 +6,10 @@
         "npm install",
         "npm run build"
       ],
-      "output": "dist/fastapi-angular/browser"
+      "output": "fastapi-angular/dist/fastapi-angular/browser"
     },
-    "start": "npx serve -s dist/fastapi-angular/browser -l $PORT"
+    "start": {
+      "cmd": "npx serve -s fastapi-angular/dist/fastapi-angular/browser -l $PORT"
+    }
   }
   
