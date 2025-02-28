@@ -2,11 +2,12 @@
     "build": {
       "base": "node:18",
       "commands": [
+        "cd fastapi-angular",
         "npm install",
         "npm run build"
       ],
       "output": "dist/fastapi-angular/browser"
     },
-    "start": "node server.js"
+    "start": "npx serve -s dist/fastapi-angular/browser -l $PORT"
   }
   
