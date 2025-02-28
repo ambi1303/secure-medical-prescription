@@ -1,0 +1,14 @@
+fastapi==0.103.1
+uvicorn==0.23.2
+pydantic==1.10.12
+pydantic[email]==1.10.12
+sqlalchemy==2.0.20
+psycopg2-binary==2.9.7  # PostgreSQL database connection
+python-dotenv==1.0.0  # For loading .env variables
+passlib==1.7.4  # Secure password hashing
+bcrypt==4.0.1  # For password hashing
+pyjwt==2.8.0  # JWT authentication
+python-multipart==0.0.6  # Required for form data handling
+cryptography==41.0.3  # For RSA signing & security
+qrcode==7.4.2  # QR code generation
+pillow==10.0.0  # Image processing for QR codes

@@ -12,7 +12,8 @@ export const routes: Routes = [
   {path:'dashboard',component:DashboardComponent},
   { path: 'issue-prescription', component: IssuePrescriptionComponent },
   { path: 'verify-prescription', component: VerifyPrescriptionComponent },
-  { path: 'logout', redirectTo: '/login', pathMatch: 'full' }
+  { path: 'logout', redirectTo: '/login', pathMatch: 'full' },
+  {path:'**',component:LoginComponent}
 ];
 
 export const appRoutingProviders = [provideRouter(routes)];
