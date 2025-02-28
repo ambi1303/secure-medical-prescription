@@ -21,7 +21,7 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   loginUser() {
-    this.http.post('http://127.0.0.1:8050/token', {
+    this.http.post('https://secure-medical-prescription.onrender.com/token', {
       username: this.username,
       password: this.password
     }).subscribe({

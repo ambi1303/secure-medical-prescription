@@ -32,7 +32,7 @@ export class VerifyPrescriptionComponent {
 
     const headers = this.authService.getHeaders();
 
-    this.http.get(`http://localhost:8050/verify-prescription?prescription_id=${this.prescriptionId}`, { headers })
+    this.http.get(`https://secure-medical-prescription.onrender.com/verify-prescription?prescription_id=${this.prescriptionId}`, { headers })
       .subscribe({
         next: (response: any) => {
           this.prescriptionDetails = response;

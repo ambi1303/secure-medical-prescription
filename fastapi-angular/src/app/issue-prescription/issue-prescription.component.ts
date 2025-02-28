@@ -34,7 +34,7 @@ export class IssuePrescriptionComponent {
       prescription_date: this.prescriptionDate
     };
 
-    this.http.post('http://localhost:8050/issue-prescription', data, { headers })
+    this.http.post('https://secure-medical-prescription.onrender.com/issue-prescription', data, { headers })
       .subscribe((response: any) => {
         this.prescriptionId = response.prescription_id;
         this.qrCode = `data:image/png;base64,${response.qr_code}`;

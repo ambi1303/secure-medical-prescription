@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8050'; // ✅ FastAPI Backend URL
+  private apiUrl = 'https://secure-medical-prescription.onrender.com/'; // ✅ FastAPI Backend URL
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
   isLoggedIn$ = this.isLoggedInSubject.asObservable(); // ✅ Observable for login state
 
