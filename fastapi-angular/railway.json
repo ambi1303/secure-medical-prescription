@@ -1,0 +1,12 @@
+{
+    "build": {
+      "base": "node:18",
+      "commands": [
+        "npm install",
+        "npm run build"
+      ],
+      "output": "dist/fastapi-angular/browser"
+    },
+    "start": "npx serve -s dist/fastapi-angular/browser -l $PORT"
+  }
+  
