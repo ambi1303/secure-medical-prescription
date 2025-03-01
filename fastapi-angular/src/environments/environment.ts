@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8050'  // Local backend
+    apiUrl: 'https://secure-medical-prescription.onrender.com'  // Production backend
   };
   
